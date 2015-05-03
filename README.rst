@@ -1,7 +1,5 @@
 .. image:: docs/quokka_themes.png
 
-.. image:: https://travis-ci.org/alexandre/quokka-themes.svg
-
 Quokka-Themes
 =============
 
