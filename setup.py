@@ -11,8 +11,8 @@ def long_desc():
 
 try:
     execfile("quokka_themes/version.py")
-except Exception:
-    exec(open("quokka_themes/version.py"))
+except NameError:
+    exec(open("quokka_themes/version.py").read())
 
 kw = {
     "name": "Quokka-Themes",
