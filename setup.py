@@ -12,7 +12,12 @@ def long_desc():
 try:
     execfile("quokka_themes/version.py")
 except NameError:
-    exec(open("quokka_themes/version.py").read())
+    exec(compile(
+        open("quokka_themes/version.py").read(),
+        "quokka_themes/version.py",
+        'exec'
+    ))
+
 
 kw = {
     "name": "Quokka-Themes",
