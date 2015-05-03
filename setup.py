@@ -9,7 +9,10 @@ def long_desc():
     with open('README.rst', 'rb') as f:
         return f.read()
 
-execfile("quokka_themes/version.py")
+try:
+    execfile("quokka_themes/version.py")
+except Exception:
+    exec(open("quokka_themes/version.py"))
 
 kw = {
     "name": "Quokka-Themes",
