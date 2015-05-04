@@ -25,6 +25,7 @@ import itertools
 import os
 import os.path
 import re
+import sys
 
 import logging
 
@@ -48,6 +49,8 @@ DOCTYPES = 'html4 html5 xhtml'.split()
 IDENTIFIER = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*$')
 
 containable = lambda i: i if hasattr(i, '__contains__') else tuple(i)
+if sys.version_info.major == 3:
+    basestring = str
 
 def starchain(i):
     return itertools.chain(*i)
@@ -121,7 +124,7 @@ def render_theme_template(theme, template_name, _fallback=True, **context):
 
     if not isinstance(theme, (list, tuple)):
         theme = [theme]
-        
+
     logger.debug("Rendering template")
     logger.debug("theme {} - template {} - fallback {} - context {}".format(
         theme, template_name, _fallback, context))
@@ -170,12 +173,12 @@ def render_theme_template(theme, template_name, _fallback=True, **context):
             return render_template('_themes/%s/%s' % (theme, last), **context)
         except TemplateNotFound:
             continue
-            
+
     if _fallback:
         logger.debug("Trying to load last template {} in app templates".format(last))
         return render_template(last, **context)
 
-    logger.debug("Template {} not found".format(last))    
+    logger.debug("Template {} not found".format(last))
 
     raise
 
@@ -295,10 +298,14 @@ class ThemeTemplateLoader(BaseLoader):
     def list_templates(self):
         res = []
         ctx = stack.top
-        fmt = '_themes/%s/%s'
-        for ident, theme in ctx.app.theme_manager.themes.iteritems():
-            res.extend((fmt % (ident, t)).encode("utf8")
+        fmt = '_themes/{}/{}'
+        for ident, theme in ctx.app.theme_manager.themes.items():
+            if sys.version_info.major == 2:
+                res.extend((fmt.format(str(ident), str(t))).encode("utf-8")
                        for t in theme.jinja_loader.list_templates())
+            elif sys.version_info.major == 3:
+                res.extend(fmt.format(str(ident), str(t)) for t in
+                           theme.jinja_loader.list_templates())
         return res
 
 #########################################################################
@@ -399,7 +406,7 @@ class ThemeManager(object):
         """
         This yields all the `Theme` objects, in sorted order.
         """
-        return sorted(self.themes.itervalues(), key=attrgetter('identifier'))
+        return sorted(self.themes.values(), key=attrgetter('identifier'))
 
     def bind_app(self, app):
         """

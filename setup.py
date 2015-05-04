@@ -6,10 +6,22 @@ requires = ["Flask>=0.6", "simplejson"]
 #    requires.append("simplejson")
 
 def long_desc():
-    with open('README.rst', 'rb') as f:
-        return f.read()
+    if sys.version_info.major != 3:
+        with open('README.rst', 'rb') as f:
+            return f.read()
+    else:
+        with open('README.rst') as f:
+            return f.read()
 
-execfile("quokka_themes/version.py")
+try:
+    execfile("quokka_themes/version.py")
+except NameError:
+    exec(compile(
+        open("quokka_themes/version.py").read(),
+        "quokka_themes/version.py",
+        'exec'
+    ))
+
 
 kw = {
     "name": "Quokka-Themes",

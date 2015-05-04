@@ -10,7 +10,8 @@ sys.path.append('..')
 
 import os.path
 from flask import Flask, url_for, render_template
-from quokka_themes import (Themes, Theme, load_themes_from,
+from quokka_themes import (
+    Themes, Theme, load_themes_from,
     packaged_themes_loader, theme_paths_loader, ThemeManager, static_file_url,
     template_exists, render_theme_template, get_theme,
     get_themes_list, themes_blueprint)
@@ -70,7 +71,7 @@ class TestSetup(object):
         assert app.theme_manager is manager
         app.config['THEME_PATHS'] = [join(TESTS, 'morethemes')]
         manager.refresh()
-        themeids = manager.themes.keys()
+        themeids = list(manager.themes.keys())
         themeids.sort()
         assert themeids == ['cool', 'plain']
         assert manager.themes['cool'].name == 'Cool Blue v2'
