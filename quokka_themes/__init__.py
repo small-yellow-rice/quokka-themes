@@ -57,6 +57,9 @@ def starchain(i):
 
 
 def active_theme(ctx):
+    logger.debug('quokka_themes.active_theme')
+    logger.debug(ctx)
+
     if '_theme' in ctx:
         return ctx['_theme']
     elif ctx.name.startswith('_themes/'):
