@@ -58,7 +58,7 @@ def starchain(i):
 
 def active_theme(ctx):
     logger.debug('quokka_themes.active_theme->')
-    logger.debug(ctx)
+    logger.debug('min:' + ctx)
     logger.debug('quokka_themes.active_theme<-')
 
     if '_theme' in ctx:
